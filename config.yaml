@@ -1,0 +1,91 @@
+# ----------------------------------------
+# Model configuration
+# ----------------------------------------
+models:
+  DeepSeek-R1:
+    local_path: null  # Local model path (set if using local mode)
+    api:              # Remote API settings
+      api_key: "sk-..."
+      api_base_pool:
+        - "..."
+
+  Llama3-8b:
+    local_path: '...'
+
+# ----------------------------
+# Data augmentation configuration
+# ----------------------------
+augmentation:
+  # Augmentation strategy
+  language: "en"  # Target language for augmentation ('en' or 'zh')
+  message: ""  # Optional system prompt prefix
+  strategy: "random"  # Augmentation method: 'basic' or 'random'
+  factor: 5  # Number of augmented samples per input
+
+  # Input/output data paths
+  data:
+    data_path: "data/sample_triplet.jsonl"  # Input data file
+    data_type: "triplet"  # Data format: 'triplet' or 'text'
+    result_path: null
+    middle_result_dir: 'middle_result'  # Optional: intermediate output folder
+    start_idx: 0  # Start index of input data
+    end_idx: -1  # End index (-1 for all)
+
+  # Inference settings
+  inference:
+    batch_size: 32
+    gpu_id: 0
+    max_new_tokens: 1024
+    max_tokens: 1024
+    temperature: 0.2
+    max_try_time: 3
+    timeout: 60
+    threads: 10
+    system_prompt: ''
+
+  # Model
+  model:
+    name: "Llama3-8b"
+    mode: "local"  # Mode: 'local' or 'remote'
+
+# ----------------------------------------
+# Test case generation configuration
+# ----------------------------------------
+test_sample_generation:
+  data:
+    data_path: "data/sample_triplet_handled.jsonl"       # Path to the input test data file
+    result_dir: "test_cases"                # Directory where the generated results will be saved
+    middle_result_dir: 'middle_result'  # Optional: intermediate output folder
+
+  recall:
+    generate: True                            # Whether to generate knowledge-recall level examples
+    sample_num: 10                            # Number of samples to generate
+    few_shot: 3                               # Number of few-shot examples to include
+
+  extraction:
+    generate: True                            # Whether to generate knowledge-extraction level examples
+    sample_num: 10                            # Number of samples to generate
+    few_shot: 3                               # Number of few-shot examples to include
+
+  reason:
+    generate: true                            # Whether to generate knowledge-reasoning level examples
+    sample_num: 10                            # Number of samples to generate
+    few_shot: 3                               # Number of few-shot examples to include
+    reason_step: 3
+    multi_source: False
+
+  model:
+    name: "Llama3-8b"
+    mode: "local"  # Mode: 'local' or 'remote'
+
+  # Inference settings
+  inference:
+    batch_size: 32
+    gpu_id: 0
+    max_new_tokens: 1024
+    max_tokens: 1024
+    temperature: 0.2
+    max_try_time: 3
+    timeout: 60
+    threads: 10
+    system_prompt: ''
